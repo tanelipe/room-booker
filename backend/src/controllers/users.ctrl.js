@@ -16,8 +16,6 @@ module.exports = {
 
   createUser: (request, response, next) => {
     let { username, password, email, firstName, lastName } = request.body
-
-    console.log(request.body)
     /* Email is not required */
     email = email || ''
 
