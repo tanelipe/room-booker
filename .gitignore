@@ -68,5 +68,5 @@ typings/
 
 
 */.eslintrc.json
-*/.vscode/
+**/.vscode/
 
