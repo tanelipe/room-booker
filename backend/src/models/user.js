@@ -6,14 +6,15 @@ const BCRYPT_SALT_WORK_FACTOR = 10
 
 let UserSchema = new mongoose.Schema({
   username: { type: String, lowercase: true, unique: true },
-  password: String,
+  password: { type: String, required: true },
   email: String,
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   created: { type: Date, required: true }
 })
 /* Before saving make sure the password is hashed */
-UserSchema.pre('save', (user, next) => {
+UserSchema.pre('save', function (next) {
+  const user = this
   /* Check if the password is modified. */
   if (!user.isModified('password')) {
     return next()

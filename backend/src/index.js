@@ -1,6 +1,7 @@
 /* Node.js packages */
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyparser = require('body-parser')
 /* Custom includes */
 const routes = require('./routes/')
 /* Express app, router */
@@ -13,6 +14,7 @@ const APP_PORT = process.env.APP_PORT || 8080
 
 /* Routing the API */
 routes(router)
+app.use(bodyparser.json())
 app.use('/api', router)
 
 /* Database connection */
