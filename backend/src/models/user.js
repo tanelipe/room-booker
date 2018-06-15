@@ -34,16 +34,29 @@ UserSchema.pre('save', (user, next) => {
   })
 })
 
-UserSchema.methods.comparePassword = function (inputPassword, callback) {
-  bcrypt.compare(inputPassword, this.password, (err, matched) => {
-    if (err) {
-      callback(err)
-    } else {
-      callback(null, matched)
+UserSchema.statics.authenticate = function (username, password, callback) {
+  User.findOne({ username: username }).exec((error, user) => {
+    if (error) {
+      return callback(error)
+    } else if (!user) {
+      var err = new Error('User not found')
+      err.status = 401
+      return callback(err)
     }
+    bcrypt.compare(password, user.password, (err, same) => {
+      if (err) {
+        return callback(err)
+      }
+      if (same) {
+        return callback(null, user)
+      } else {
+        return callback()
+      }
+    })
   })
 }
 
 UserSchema.plugin(validator)
 
-module.exports = mongoose.model('User', UserSchema)
+var User = mongoose.model('User', UserSchema)
+module.exports = User
