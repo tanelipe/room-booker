@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const validator = require('mongoose-unique-validator')
 
-const BCRYPT_SALT_WORK_FACTOR = 10
+const BCRYPT_SALT_WORK_FACTOR = 12
 
 let UserSchema = new mongoose.Schema({
   username: { type: String, lowercase: true, unique: true },
@@ -34,6 +34,10 @@ UserSchema.pre('save', function (next) {
     })
   })
 })
+
+UserSchema.methods.validatePassword = function (password) {
+  return bcrypt.compareSync(password, this.password)
+}
 
 UserSchema.statics.authenticate = function (username, password, callback) {
   User.findOne({ username: username }).exec((error, user) => {
