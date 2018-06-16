@@ -11,7 +11,7 @@ import PageNotFound from './components/404'
 
 const theme = createMuiTheme({
   palette: {
-    type: 'dark'
+    type: 'light'
   } 
 })
 
