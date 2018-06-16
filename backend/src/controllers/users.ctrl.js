@@ -30,9 +30,17 @@ module.exports = {
       }
       User.create(data, (error, user) => {
         if (error) {
-          return next(error)
+          const errors = error.errors
+          const replyErrors = [ ]
+          for (let error in errors) {
+            if (errors[error]) {
+              replyErrors.push(errors[error].message)
+            }
+          }
+          response.statusMessage = replyErrors
+          return response.status(400).end()
         }
-        return response.redirect('/')
+        response.sendStatus(201)
       })
     } else {
       let error = new Error('Please fill in all the required fields')

@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const bodyparser = require('body-parser')
 const passport = require('passport')
 const expressSession = require('express-session')
+const cors = require('cors')
 /* Custom includes */
 const routes = require('./routes/')
 /* Include the passport.js which handles the authentications */
@@ -27,6 +28,8 @@ const SESSION_PARAMETERS = {
 router.get('*', passportExtensions.isUserAuthenticated)
 
 routes(router)
+
+app.use(cors())
 app.use(bodyparser.json())
 app.use(expressSession(SESSION_PARAMETERS))
 app.use(passport.initialize())
